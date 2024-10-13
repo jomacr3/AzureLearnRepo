@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Web App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 100px;
+        }
+        input[type="text"] {
+            width: 200px;
+            padding: 10px;
+            margin-right: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Simple Web App with Azure Deployment</h1>
+    <p>Enter your text below and click the button:</p>
+    
+    <input type="text" id="inputText" placeholder="Type something here">
+    <button onclick="displayMessage()">Click Me</button>
+    
+    <p id="output"></p>
+
+    <script>
+        function displayMessage() {
+            var input = document.getElementById('inputText').value;
+            document.getElementById('output').innerText = "You entered: " + input;
+        }
+    </script>
+
+</body>
+</html>
