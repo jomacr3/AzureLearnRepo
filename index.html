@@ -26,21 +26,57 @@
             background-color: #45a049;
         }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/@azure/storage-table"></script>
 </head>
 <body>
 
-    <h1>Simple Web App with Azure Deployment</h1>
-    <p>Enter your text below and click the button:</p>
+    <h1>Simple Web App with Azure Table Storage</h1>
+    <p>Enter your text below and click the button to store it in Azure Table Storage:</p>
     
     <input type="text" id="inputText" placeholder="Type something here">
-    <button onclick="displayMessage()">Click Me</button>
+    <button onclick="storeInAzure()">Store in Azure</button>
     
     <p id="output"></p>
 
     <script>
-        function displayMessage() {
-            var input = document.getElementById('inputText').value;
-            document.getElementById('output').innerText = "You entered: " + input;
+        async function storeInAzure() {
+            const account = "<YOUR_STORAGE_ACCOUNT_NAME>";
+            const accountKey = "<YOUR_STORAGE_ACCOUNT_KEY>";
+            const tableName = "Entries";
+            const input = document.getElementById('inputText').value;
+
+            if (!input) {
+                document.getElementById('output').innerText = "Please enter a value.";
+                return;
+            }
+
+            const { TableClient, AzureNamedKeyCredential } = AzureStorageTable;
+
+            try {
+                const credential = new AzureNamedKeyCredential(account, accountKey);
+                const client = new TableClient(
+                    `https://${account}.table.core.windows.net`,
+                    tableName,
+                    credential
+                );
+
+                // Create the table if it doesn't exist
+                await client.createTable();
+
+                // Add the input as a new entity
+                const entity = {
+                    partitionKey: "UserInput",
+                    rowKey: new Date().getTime().toString(),
+                    text: input
+                };
+
+                await client.createEntity(entity);
+
+                document.getElementById('output').innerText = "Data successfully stored in Azure Table Storage.";
+            } catch (error) {
+                console.error(error);
+                document.getElementById('output').innerText = "Error storing data in Azure Table Storage.";
+            }
         }
     </script>
 
