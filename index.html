@@ -40,9 +40,9 @@
 
     <script>
         async function storeInAzure() {
-            const account = "<YOUR_STORAGE_ACCOUNT_NAME>";
-            const accountKey = "<YOUR_STORAGE_ACCOUNT_KEY>";
-            const tableName = "Entries";
+            const account = "storage888fb92ebf7e4119";
+            const accountKey = "HjOID73Jib3sN+WE73thToHm1xFqPZBkwfkcoPyDoSPdkUXosPmZGEGjxIaoIDtMw0Ht8nnpHnzY+AStI/96HA==";
+            const tableName = "websiteInputs";
             const input = document.getElementById('inputText').value;
 
             if (!input) {
@@ -66,8 +66,8 @@
                 // Add the input as a new entity
                 const entity = {
                     partitionKey: "UserInput",
-                    rowKey: new Date().getTime().toString(),
-                    text: input
+                    Timestamp: new Date().getTime().toString(),
+                    value: input
                 };
 
                 await client.createEntity(entity);
