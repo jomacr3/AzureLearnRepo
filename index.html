@@ -26,7 +26,7 @@
             background-color: #45a049;
         }
     </style>
-    <script src="https://cdn.jsdelivr.net/npm/@azure/storage-table"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@azure/data-tables@14.0.1"></script>
 </head>
 <body>
 
@@ -40,9 +40,9 @@
 
     <script>
         async function storeInAzure() {
-            const account = "storage888fb92ebf7e4119";
-            const accountKey = "HjOID73Jib3sN+WE73thToHm1xFqPZBkwfkcoPyDoSPdkUXosPmZGEGjxIaoIDtMw0Ht8nnpHnzY+AStI/96HA==";
-            const tableName = "websiteInputs";
+            const account = "<YOUR_STORAGE_ACCOUNT_NAME>";
+            const accountKey = "<YOUR_STORAGE_ACCOUNT_KEY>";
+            const tableName = "Entries";
             const input = document.getElementById('inputText').value;
 
             if (!input) {
@@ -50,7 +50,8 @@
                 return;
             }
 
-            const { TableClient, AzureNamedKeyCredential } = AzureStorageTable;
+            // Import the TableClient and AzureNamedKeyCredential
+            const { TableClient, AzureNamedKeyCredential } = Azure.Data.Tables;
 
             try {
                 const credential = new AzureNamedKeyCredential(account, accountKey);
@@ -66,8 +67,8 @@
                 // Add the input as a new entity
                 const entity = {
                     partitionKey: "UserInput",
-                    Timestamp: new Date().getTime().toString(),
-                    value: input
+                    rowKey: new Date().getTime().toString(),
+                    text: input
                 };
 
                 await client.createEntity(entity);
